@@ -136,6 +136,7 @@ class LanguageServerManager(LanguageServerManagerAPI):
         self._language_servers_from_config = dict(self.language_servers)
         self.language_servers = self._collect_language_servers(only_installed=True)
         self.all_language_servers = self._collect_language_servers(only_installed=False)
+        # print("language_servers", self.language_servers)
 
     def _collect_language_servers(
         self, only_installed: bool
@@ -152,6 +153,8 @@ class LanguageServerManager(LanguageServerManagerAPI):
 
         # restore config
         language_servers.update(language_servers_from_config)
+
+        self.log.info(f"only_installed : {only_installed}, language_servers: {language_servers.keys()}")
 
         # coalesce the servers, allowing a user to opt-out by specifying `[]`
         return {key: spec for key, spec in language_servers.items() if spec.get("argv")}
